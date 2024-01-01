@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:raahi/screens/createaccountscreen.dart';
+import 'package:raahi/screens/tabscreen.dart';
 import 'package:raahi/widget/frostedglass.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -94,14 +95,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                   style: TextStyle(color: Colors.white),
                                 )),
                           ),
-                          const ElevatedButton(
-                              style: ButtonStyle(
+                          ElevatedButton(
+                              style: const ButtonStyle(
                                   minimumSize: MaterialStatePropertyAll(
                                       Size.fromHeight(50)),
                                   backgroundColor: MaterialStatePropertyAll(
                                       Color(0xff5566ff))),
-                              onPressed: null,
-                              child: Text(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const TabScreen()));
+                              },
+                              child: const Text(
                                 'Sign In',
                                 style: TextStyle(color: Colors.white),
                               )),

@@ -3,12 +3,15 @@ import 'package:raahi/Api/eventapi.dart';
 import 'package:raahi/Api/imageapi.dart';
 import 'package:raahi/Api/overviewapi.dart';
 import 'package:raahi/screens/destinationDetails.dart';
+import 'package:raahi/screens/homescreen.dart';
+import 'package:raahi/screens/loginscreen.dart';
 import 'package:raahi/screens/profilescreen.dart';
 
 import 'package:raahi/screens/tabscreen.dart';
 import 'package:raahi/screens/mytripscreen.dart';
 import 'package:raahi/screens/upcomingscreen.dart';
 import 'package:raahi/screens/wishlistscreen.dart';
+import 'package:raahi/widget/hometiles.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +32,10 @@ class MyApp extends StatelessWidget {
           titleMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
       ),
-      home: TabScreen(),
+      // home: TabScreen(),
+      home: LoginScreen(),
+      // home: HomeTiles(),
+      // home: HomeScreen(),
       // home: UpcomingScreen(),
       // home: EventApi(),
       // home: StateOverview()

@@ -125,7 +125,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             saveDetails();
                           },
                           child: const Text(
-                            'Sign In',
+                            'Sign Up',
                             style: TextStyle(color: Colors.white),
                           )),
                       const SizedBox(height: 5),
@@ -133,7 +133,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text(
-                            "Don't Have An Account?",
+                            "Already Have An Account?",
                             style: TextStyle(color: Colors.white),
                           ),
                           TextButton(

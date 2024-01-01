@@ -20,16 +20,13 @@ class ExploreScreen extends StatelessWidget {
           child: TextField(
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: 2),
+                  borderSide: BorderSide(width: 1),
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff3DA35D), width: 2),
+                  borderSide: BorderSide(color: Color(0xff3DA35D), width: 1),
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               hintText: 'Search destination...',
-              prefixIcon: Icon(
-                Iconsax.search_normal,
-                color: Color(0xff3E8914),
-              ),
+              prefixIcon: Icon(Iconsax.search_normal),
             ),
           ),
         )
