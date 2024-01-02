@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:raahi/screens/createaccountscreen.dart';
 import 'package:raahi/screens/tabscreen.dart';
@@ -17,6 +18,27 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final _usernameController = TextEditingController();
     final _passwordController = TextEditingController();
+
+    void loginuser() async {
+      try {
+        final credential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _usernameController.text,
+          password: _passwordController.text,
+        );
+        User? user = credential.user;
+        if (user != null) {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const TabScreen()));
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          print('No user found for that email.');
+        } else if (e.code == 'wrong-password') {
+          print('Wrong password provided for that user.');
+        }
+      }
+    }
 
     return Scaffold(
       body: Container(
@@ -102,11 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   backgroundColor: MaterialStatePropertyAll(
                                       Color(0xff5566ff))),
                               onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const TabScreen()));
+                                loginuser();
                               },
                               child: const Text(
                                 'Sign In',

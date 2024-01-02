@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1038182583978",
+    "project_id": "raahi-757e4",
+    "storage_bucket": "raahi-757e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1038182583978:android:35e9d602f4cae2b968cad3",
+        "android_client_info": {
+          "package_name": "com.example.raahi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6foWvRUwp9Ac0sQCzKN57h9ay6KBw71Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

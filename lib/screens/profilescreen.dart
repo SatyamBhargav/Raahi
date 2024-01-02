@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -124,7 +125,9 @@ class ProfileScreen extends StatelessWidget {
                       style: TextButton.styleFrom(
                           side: BorderSide(width: 2, color: Colors.red),
                           foregroundColor: Colors.red),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                      },
                       child: const Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 130, vertical: 10),

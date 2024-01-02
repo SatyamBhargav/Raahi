@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:raahi/screens/loginscreen.dart';
 import 'package:raahi/widget/frostedglass.dart';
@@ -10,22 +11,27 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  // final _emailController = TextEditingController();
-  // final _passwordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  var _emailController = '';
-  var _passwordController = '';
-
-  void saveDetails() {
-    // final isValid = _formKey.currentState!.validate();
-    // // if (!isValid || !_isLogin && _selectedImage == null) {
-    // //   return;
-    // // }
-    // _formKey.currentState!.save();
-
-    // _firebase.createUserWithEmailAndPassword(
-    //     email: _emailController, password: _passwordController);
+  void createUserWithEmailAndPassword() async {
+    print(_emailController.text);
+    print(_passwordController.text);
+    try {
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -80,9 +86,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       const SizedBox(height: 10),
                       TextFormField(
                           keyboardType: TextInputType.emailAddress,
-                          onSaved: (newValue) {
-                            _emailController = newValue!;
-                          },
+                          controller: _emailController,
                           cursorColor: Colors.white,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
@@ -98,9 +102,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                   borderRadius: BorderRadius.circular(25)))),
                       const SizedBox(height: 10),
                       TextFormField(
-                          onSaved: (newValue) {
-                            _passwordController = newValue!;
-                          },
+                          controller: _passwordController,
                           cursorColor: Colors.white,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
@@ -122,7 +124,7 @@ class _CreateAccountState extends State<CreateAccount> {
                               backgroundColor:
                                   MaterialStatePropertyAll(Color(0xff5566ff))),
                           onPressed: () {
-                            saveDetails();
+                            createUserWithEmailAndPassword();
                           },
                           child: const Text(
                             'Sign Up',
