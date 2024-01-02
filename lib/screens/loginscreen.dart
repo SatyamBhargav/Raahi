@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:raahi/screens/createaccountscreen.dart';
@@ -14,32 +15,71 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  @override
-  Widget build(BuildContext context) {
-    final _usernameController = TextEditingController();
-    final _passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
 
-    void loginuser() async {
-      try {
-        final credential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _usernameController.text,
-          password: _passwordController.text,
+  void loginuser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String emailOrUsername = _usernameController.text.trim();
+    String password = _passwordController.text;
+
+    try {
+      // Check if the input is an email
+      if (emailOrUsername.contains('@')) {
+        // Sign in with email
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailOrUsername,
+          password: password,
         );
-        User? user = credential.user;
-        if (user != null) {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const TabScreen()));
-        }
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          print('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
+      } else {
+        // Sign in with username
+        QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .where('username', isEqualTo: emailOrUsername)
+            .limit(1)
+            //The limit(1) ensures that only one document (if any) is retrieved.
+            //The result is stored in a QuerySnapshot named querySnapshot.
+            .get();
+        if (querySnapshot.docs.isNotEmpty) {
+          String email = querySnapshot.docs.first['email'];
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: email,
+            password: password,
+          );
+        } else {
+          print('User not found with the provided username');
+
+          return; // Add appropriate handling for user not found
         }
       }
-    }
 
+      // If the authentication is successful, navigate to the TabScreen
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const TabScreen()),
+          (route) => false);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email/username.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      } else {
+        print('Error: $e');
+      }
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         constraints: const BoxConstraints.expand(),
@@ -82,9 +122,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: InputDecoration(
                                   contentPadding:
                                       const EdgeInsets.only(left: 30, top: 40),
-                                  hintText: 'Username',
+                                  hintText: 'Email or username',
                                   hintStyle: const TextStyle(
-                                      fontSize: 15, color: Colors.white30),
+                                      fontSize: 15, color: Colors.white),
                                   filled: true,
                                   fillColor: const Color(0xff00303D),
                                   border: OutlineInputBorder(
@@ -101,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       const EdgeInsets.only(left: 30, top: 40),
                                   hintText: 'Password',
                                   hintStyle: const TextStyle(
-                                      fontSize: 15, color: Colors.white30),
+                                      fontSize: 15, color: Colors.white),
                                   filled: true,
                                   fillColor: const Color(0xff00303D),
                                   border: OutlineInputBorder(
@@ -117,43 +157,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                   style: TextStyle(color: Colors.white),
                                 )),
                           ),
-                          ElevatedButton(
-                              style: const ButtonStyle(
-                                  minimumSize: MaterialStatePropertyAll(
-                                      Size.fromHeight(50)),
-                                  backgroundColor: MaterialStatePropertyAll(
-                                      Color(0xff5566ff))),
-                              onPressed: () {
-                                loginuser();
-                              },
-                              child: const Text(
-                                'Sign In',
-                                style: TextStyle(color: Colors.white),
-                              )),
+                          _isLoading
+                              ? CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : ElevatedButton(
+                                  style: const ButtonStyle(
+                                      minimumSize: MaterialStatePropertyAll(
+                                          Size.fromHeight(50)),
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Color(0xff5566ff))),
+                                  onPressed: () {
+                                    loginuser();
+                                  },
+                                  child: const Text(
+                                    'Sign In',
+                                    style: TextStyle(color: Colors.white),
+                                  )),
                         ],
                       )),
                 ),
                 const SizedBox(height: 20),
-                // GestureDetector(
-                //   onTap: () => _handelGoogleSignIn(),
-                //   child: Padding(
-                //     padding: const EdgeInsets.symmetric(horizontal: 40),
-                //     child: Container(
-                //       padding: const EdgeInsets.symmetric(vertical: 5),
-                //       decoration: BoxDecoration(
-                //           color: Colors.white,
-                //           borderRadius: BorderRadius.circular(20)),
-                //       child: Row(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         children: [
-                //           Image.asset('images/google.png', height: 40),
-                //           const SizedBox(width: 15),
-                //           const Text('Sign in with Google')
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 const SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -25,8 +25,8 @@ class HomeTiles extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(15),
           child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.green, borderRadius: BorderRadius.circular(20)),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
               height: 320,
               width: double.infinity,
               child: ClipRRect(

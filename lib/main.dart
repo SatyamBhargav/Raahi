@@ -6,6 +6,7 @@ import 'package:raahi/Api/imageapi.dart';
 import 'package:raahi/Api/overviewapi.dart';
 import 'package:raahi/firebase_options.dart';
 import 'package:raahi/screens/destinationDetails.dart';
+import 'package:raahi/screens/explorescreen.dart';
 import 'package:raahi/screens/homescreen.dart';
 import 'package:raahi/screens/loginscreen.dart';
 import 'package:raahi/screens/profilescreen.dart';
@@ -38,6 +39,21 @@ class MyApp extends StatelessWidget {
           ),
         ),
         // home: TabScreen(),
+        // home: TabScreen(),
+        // home: LoginScreen(),
+        // home: ExploreScreen(),
+        // home: HomeTiles(),
+        // home: HomeScreen(),
+        // home: UpcomingScreen(),
+        // home: EventApi(),
+        // home: StateOverview()
+        // home: DestinationDetail(
+        //     destinationName: 'rajasthan', destinationRating: '4')
+        // home: ProfileScreen(),
+        // home: MyTripScreen(),
+        // home: WishListScreen(),
+        // home: HomeImageProvider(),
+
         home: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
@@ -52,18 +68,6 @@ class MyApp extends StatelessWidget {
               return CircularProgressIndicator();
             }
           },
-        )
-        // home: HomeTiles(),
-        // home: HomeScreen(),
-        // home: UpcomingScreen(),
-        // home: EventApi(),
-        // home: StateOverview()
-        // home: DestinationDetail(
-        //     destinationName: 'rajasthan', destinationRating: '4')
-        // home: ProfileScreen(),
-        // home: MyTripScreen(),
-        // home: WishListScreen(),
-        // home: HomeImageProvider(),
-        );
+        ));
   }
 }

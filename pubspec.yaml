@@ -43,6 +43,7 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   firebase_core: ^2.24.2
   firebase_auth: ^4.15.3
+  cloud_firestore: ^4.13.6
   
 
 dev_dependencies:
@@ -79,7 +80,6 @@ flutter:
     - images/rajasthan.png
     - images/kashmir.png
     - images/mytrip.png
-    - images/backgroundImage.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

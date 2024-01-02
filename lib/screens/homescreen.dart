@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
           title: Text(
-            'Raahi',
+            'raahi',
             style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                 color: const Color(0xff3a5a40), fontFamily: 'Samarkan'),
           )),

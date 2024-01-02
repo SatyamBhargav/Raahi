@@ -1,10 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:raahi/screens/loginscreen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _isLoading = false;
+  // QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+  //   .collection('users')
+  //   .where('username', isEqualTo: emailOrUsername)
+  //   .limit(1)
+  //   .get();
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,13 +26,13 @@ class ProfileScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(height: 50),
-          const ListTile(
+          ListTile(
             leading: CircleAvatar(
               radius: 30,
               child: Icon(Iconsax.user_tick),
             ),
-            title: Text('Name'),
-            subtitle: Text('example@gmail.com'),
+            title: Text('${user!.displayName}'),
+            subtitle: Text('${user!.email}'),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
@@ -120,23 +134,77 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 50),
+
                 Center(
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                          side: BorderSide(width: 2, color: Colors.red),
-                          foregroundColor: Colors.red),
-                      onPressed: () async {
-                        await FirebaseAuth.instance.signOut();
-                      },
-                      child: const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 130, vertical: 10),
-                        child: Text(
-                          'Log Out',
-                          style: TextStyle(fontSize: 20),
+                  child: _isLoading
+                      ? CircularProgressIndicator(
+                          color: Colors.red,
+                        )
+                      : TextButton(
+                          style: TextButton.styleFrom(
+                              side: BorderSide(width: 2, color: Colors.red),
+                              foregroundColor: Colors.red),
+                          onPressed: () async {
+                            try {
+                              setState(() {
+                                _isLoading = true;
+                              });
+
+                              await FirebaseAuth.instance.signOut();
+
+                              // Ensure the user is redirected to the login screen after signing out
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()),
+                              );
+                            } catch (e) {
+                              print('Error during sign-out: $e');
+                            } finally {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 130, vertical: 10),
+                            child: Text(
+                              'Log Out',
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
                         ),
-                      )),
                 )
+
+                // Center(
+                //   child: _isLoading
+                //       ? CircularProgressIndicator(
+                //           color: Colors.red,
+                //         )
+                //       : TextButton(
+                //           style: TextButton.styleFrom(
+                //               side: BorderSide(width: 2, color: Colors.red),
+                //               foregroundColor: Colors.red),
+                //           onPressed: () async {
+                //             setState(() {
+                //               _isLoading = true;
+                //             });
+                //             await FirebaseAuth.instance.signOut();
+                //             Navigator.pushReplacement(
+                //                 context,
+                //                 MaterialPageRoute(
+                //                     builder: (context) => LoginScreen()));
+                //           },
+                //           child: const Padding(
+                //             padding: EdgeInsets.symmetric(
+                //                 horizontal: 130, vertical: 10),
+                //             child: Text(
+                //               'Log Out',
+                //               style: TextStyle(fontSize: 20),
+                //             ),
+                //           )),
+                // )
               ],
             ),
           )
