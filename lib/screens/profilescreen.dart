@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:raahi/screens/Profile/editProfileScreen.dart';
 import 'package:raahi/screens/loginscreen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -47,23 +48,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(fontSize: 20, color: Colors.grey),
                   ),
                 ),
-                const ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.black,
-                    radius: 21,
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.white,
-                      child: Icon(Iconsax.user),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditProfileScreen()));
+                  },
+                  child: const ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.black,
+                      radius: 21,
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.white,
+                        child: Icon(Iconsax.user),
+                      ),
                     ),
-                  ),
-                  title: Text(
-                    'Edit Profile',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    size: 20,
+                    title: Text(
+                      'Edit Profile',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 20,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),

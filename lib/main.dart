@@ -30,44 +30,45 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        // themeMode: ThemeMode.dark,
-        theme: ThemeData(
-          useMaterial3: true,
-          textTheme: const TextTheme(
-            headlineMedium: TextStyle(fontWeight: FontWeight.bold),
-            titleMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
+      // themeMode: ThemeMode.dark,
+      theme: ThemeData(
+        useMaterial3: true,
+        textTheme: const TextTheme(
+          headlineMedium: TextStyle(fontWeight: FontWeight.bold),
+          titleMedium: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
-        // home: TabScreen(),
-        // home: TabScreen(),
-        // home: LoginScreen(),
-        // home: ExploreScreen(),
-        // home: HomeTiles(),
-        // home: HomeScreen(),
-        // home: UpcomingScreen(),
-        // home: EventApi(),
-        // home: StateOverview()
-        // home: DestinationDetail(
-        //     destinationName: 'rajasthan', destinationRating: '4')
-        // home: ProfileScreen(),
-        // home: MyTripScreen(),
-        // home: WishListScreen(),
-        // home: HomeImageProvider(),
+      ),
+      home: TabScreen(),
+      // home: TabScreen(),
+      // home: LoginScreen(),
+      // home: ExploreScreen(),
+      // home: HomeTiles(),
+      // home: HomeScreen(),
+      // home: UpcomingScreen(),
+      // home: EventApi(),
+      // home: StateOverview()
+      // home: DestinationDetail(
+      //     destinationName: 'rajasthan', destinationRating: '4')
+      // home: ProfileScreen(),
+      // home: MyTripScreen(),
+      // home: WishListScreen(),
+      // home: HomeImageProvider(),
 
-        home: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              User? user = snapshot.data;
-              if (user == null) {
-                return LoginScreen();
-              } else {
-                return TabScreen();
-              }
-            } else {
-              return CircularProgressIndicator();
-            }
-          },
-        ));
+      // home: StreamBuilder<User?>(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.active) {
+      //       User? user = snapshot.data;
+      //       if (user == null) {
+      //         return LoginScreen();
+      //       } else {
+      //         return TabScreen();
+      //       }
+      //     } else {
+      //       return CircularProgressIndicator();
+      //     }
+      //   },
+      // ),
+    );
   }
 }

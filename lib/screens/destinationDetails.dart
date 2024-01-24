@@ -4,7 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:raahi/Api/eventapi.dart';
 import 'package:raahi/Api/imageapi.dart';
 import 'package:raahi/Api/overviewapi.dart';
-
+import 'package:raahi/screens/iteinerary.dart';
 
 class DestinationDetail extends StatefulWidget {
   const DestinationDetail(
@@ -21,6 +21,28 @@ class DestinationDetail extends StatefulWidget {
 class _DestinationDetailState extends State<DestinationDetail>
     with TickerProviderStateMixin {
   bool isAddedToWishlist = true;
+
+  void bottomsheet(String statename) {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) {
+          return Container(
+            height: 290,
+            alignment: Alignment.center,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Iteinerary(destinationName: statename),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     TabController tabController = TabController(length: 3, vsync: this);
@@ -29,7 +51,7 @@ class _DestinationDetailState extends State<DestinationDetail>
         Container(
           width: double.infinity,
           color: Colors.green,
-          child: ImageApi(stateName: '${widget.destinationName}'),
+          // child: ImageApi(stateName: '${widget.destinationName}'),
         ),
         Align(
           alignment: Alignment.bottomCenter,
@@ -127,11 +149,11 @@ class _DestinationDetailState extends State<DestinationDetail>
                   child: TabBarView(
                     controller: tabController,
                     children: [
-                      StateOverview(stateName: '${widget.destinationName}'),
-                      EventApi(stateName: widget.destinationName),
+                      // StateOverview(stateName: '${widget.destinationName}'),
+                      // EventApi(stateName: widget.destinationName),
                       // UpcomingScreen(),
 
-                      Text('HEY'),
+                      Text('HEY'), Text('HEY'), Text('HEY'),
                     ],
                   ),
                 ),
@@ -142,7 +164,7 @@ class _DestinationDetailState extends State<DestinationDetail>
                           MaterialStatePropertyAll(Color(0xff134611)),
                       backgroundColor:
                           MaterialStatePropertyAll(Color(0xff96e072))),
-                  onPressed: () => print('button is working'),
+                  onPressed: () => bottomsheet(widget.destinationName),
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
