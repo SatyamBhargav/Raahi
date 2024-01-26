@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:raahi/Api/openai.dart';
 import 'package:raahi/screens/finaliteinerary.dart';
+import 'package:raahi/screens/loadingscreen.dart';
 
 class Iteinerary extends StatefulWidget {
   const Iteinerary({super.key, required this.destinationName});
@@ -29,12 +31,55 @@ class _IteineraryState extends State<Iteinerary> {
     '15000-20000'
   ];
 
+  String _answerText = '';
+  bool _isLoading = false;
+
+  void handleButtonPress() {
+    setState(() {
+      _isLoading = true;
+    });
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LoadingScreen();
+    }));
+    Future.delayed(Duration(seconds: 24), () {
+      setState(() {
+        _isLoading = false;
+        Navigator.pop(context);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime startDate = selectedDates.start;
     DateTime endDate = selectedDates.end;
-    String DefaultstartDate = formatDate(startDate, "EEE, dd MMM");
-    String DefaultendDate = formatDate(endDate, "EEE, dd MMM");
+    String defaultstartDate = formatDate(startDate, "EEE, dd MMM");
+    String defaultendDate = formatDate(endDate, "EEE, dd MMM");
+
+    sendRequest(String destination) async {
+      setState(() {
+        _isLoading = true;
+      });
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return LoadingScreen();
+      }));
+      final result = await OpneAi.postRequest(
+          msg:
+              'i want to travel from delhi to $destination from $startDate to $endDate and i have a budget of $initialBudget in inr create an itinerary please display my destination, dates and budget in the result');
+      if (result != null) {
+        setState(() {
+          _isLoading = false;
+          _answerText = result;
+          Navigator.pop(context);
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return FinalIteinerary(responseText: _answerText);
+            },
+          ));
+        });
+      }
+    }
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
@@ -98,14 +143,14 @@ class _IteineraryState extends State<Iteinerary> {
                             ),
                             const SizedBox(width: 5),
                             Text(
-                              "$DefaultstartDate - ",
+                              "$defaultstartDate - ",
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
                             const Icon(Iconsax.calendar_1),
                             const SizedBox(width: 5),
                             Text(
-                              DefaultendDate,
+                              defaultendDate,
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
@@ -150,14 +195,9 @@ class _IteineraryState extends State<Iteinerary> {
                 ),
                 TextButton(
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return FinalIteinerary(
-                            destinationName: widget.destinationName,
-                            startDate: startDate.toString(),
-                            endDate: endDate.toString(),
-                            budget: initialBudget);
-                      }));
+                      // handleButtonPress();
+                      sendRequest(widget.destinationName);
+                      // completionFun(widget.destinationName, initialBudget);
                     },
                     child: Text(
                       "Create",

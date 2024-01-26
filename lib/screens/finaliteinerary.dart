@@ -1,27 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:raahi/screens/tabscreen.dart';
 
-class FinalIteinerary extends StatelessWidget {
-  FinalIteinerary({
-    super.key,
-    required this.destinationName,
-    required this.startDate,
-    required this.endDate,
-    required this.budget,
-  });
-  String destinationName;
-  String startDate;
-  String endDate;
-  String budget;
+// ignore: must_be_immutable
+class FinalIteinerary extends StatefulWidget {
+  FinalIteinerary({super.key, required this.responseText});
 
+  String responseText;
+
+  @override
+  State<FinalIteinerary> createState() => _FinalIteineraryState();
+}
+
+class _FinalIteineraryState extends State<FinalIteinerary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-        Text(destinationName),
-        Text(startDate),
-        Text(endDate),
-        Text(budget)
-      ]),
+      appBar: AppBar(
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        title: Text("Please Enjoy"),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                child: Text(
+                  widget.responseText,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(fontSize: 20),
+                ),
+              )
+            ]),
+      ),
     );
   }
 }

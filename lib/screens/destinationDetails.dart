@@ -51,7 +51,7 @@ class _DestinationDetailState extends State<DestinationDetail>
         Container(
           width: double.infinity,
           color: Colors.green,
-          // child: ImageApi(stateName: '${widget.destinationName}'),
+          child: ImageApi(stateName: '${widget.destinationName}'),
         ),
         Align(
           alignment: Alignment.bottomCenter,
@@ -149,11 +149,11 @@ class _DestinationDetailState extends State<DestinationDetail>
                   child: TabBarView(
                     controller: tabController,
                     children: [
-                      // StateOverview(stateName: '${widget.destinationName}'),
-                      // EventApi(stateName: widget.destinationName),
+                      StateOverview(stateName: '${widget.destinationName}'),
+                      EventApi(stateName: widget.destinationName),
                       // UpcomingScreen(),
 
-                      Text('HEY'), Text('HEY'), Text('HEY'),
+                      Text('HEY')
                     ],
                   ),
                 ),

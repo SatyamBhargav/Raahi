@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:raahi/Api/eventapi.dart';
 import 'package:raahi/Api/imageapi.dart';
 import 'package:raahi/Api/overviewapi.dart';
@@ -8,6 +9,7 @@ import 'package:raahi/firebase_options.dart';
 import 'package:raahi/screens/destinationDetails.dart';
 import 'package:raahi/screens/explorescreen.dart';
 import 'package:raahi/screens/homescreen.dart';
+import 'package:raahi/screens/loadingscreen.dart';
 import 'package:raahi/screens/loginscreen.dart';
 import 'package:raahi/screens/profilescreen.dart';
 
@@ -17,9 +19,10 @@ import 'package:raahi/screens/upcomingscreen.dart';
 import 'package:raahi/screens/wishlistscreen.dart';
 import 'package:raahi/widget/hometiles.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await dotenv.load();
   runApp(const MyApp());
 }
 
@@ -39,6 +42,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: TabScreen(),
+      // home: LoadingScreen(),
       // home: TabScreen(),
       // home: LoginScreen(),
       // home: ExploreScreen(),
